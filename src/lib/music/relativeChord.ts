@@ -222,9 +222,6 @@ export const parseRelativeChord = (intervalString: string): RelativeChord | null
 		case '9':
 			quality = quality === 'major' ? '9' : 'minor-9';
 			break;
-		case '9':
-			quality = quality === 'major' ? '9' : 'minor-9';
-			break;
 		case '11':
 			quality = quality === 'major' ? '11' : 'minor-11';
 			break;

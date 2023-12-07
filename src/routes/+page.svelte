@@ -56,6 +56,7 @@
 <main>
 	<section class="title-section">
 		<h1>Guitar Chord Progressions</h1>
+		<h3>also available in <a href="https://marginalhours.net/ukulele-progressions">ukulele</a></h3>
 	</section>
 	<section class="fretting-section">
 		{#each $progression as relativeChord}
@@ -107,6 +108,12 @@
 
 	.title-section {
 		margin: 2em auto;
+		text-align: center;
+	}
+
+	.title-section h3 {
+		font-style: italic;
+		font-weight: normal;
 	}
 
 	.fretting-section {
