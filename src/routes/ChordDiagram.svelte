@@ -28,14 +28,14 @@
 		boardColor: '#fff',
 		dotColor: '#111',
 		lineColor: '#333',
-		lineWidth: 2,
+		lineWidth: 3.5,
 		marginLeft: 28,
 		marginRight: 42,
-		marginTop: 25,
+		marginTop: 30,
 		marginBottom: 5,
-		diagramWidth: 150,
-		diagramHeight: 150,
-		dotRadius: 9,
+		diagramWidth: 200,
+		diagramHeight: 220,
+		dotRadius: 12,
 		labelFontSize: 24
 	};
 
@@ -139,11 +139,11 @@
 	{#each [0, 1, 2, 3, 4, 5] as stringIndex}
 		{#if fretted[stringIndex] < 0}
 			<text
-				font-size="18px"
+				font-size="24px"
 				transition:fade
 				color={diagramStyle.dotColor}
-				x={dotXcoords[stringIndex] - 6}
-				y={diagramStyle.marginTop - 10}>x</text
+				x={dotXcoords[stringIndex] - 9}
+				y={diagramStyle.marginTop - 12}>x</text
 			>
 		{/if}
 	{/each}
@@ -152,11 +152,11 @@
 	{#each [0, 1, 2, 3, 4, 5] as stringIndex}
 		{#if fretted[stringIndex] == 0}
 			<text
-				font-size="16px"
+				font-size="24px"
 				transition:fade
 				color={diagramStyle.dotColor}
-				x={dotXcoords[stringIndex] - 6}
-				y={diagramStyle.marginTop - 8}>O</text
+				x={dotXcoords[stringIndex] - 10}
+				y={diagramStyle.marginTop - 12}>O</text
 			>
 		{/if}
 	{/each}
