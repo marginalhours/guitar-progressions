@@ -55,21 +55,63 @@ export const relativeChordToString = (interval: RelativeChord): string => {
 		case '6':
 			return `${number}6`;
 		case 'minor-major-6':
-			return `${number.toLowerCase()}6`;
+			return `${number.toLowerCase()}maj6`;
+		case '9':
+			return `${number}9`;
+		case 'minor-9':
+			return `${number.toLowerCase()}9`;
+		case 'minor-major-9':
+			return `${number.toLowerCase()}maj9`;
+		case '11':
+			return `${number}11`;
+		case 'minor-11':
+			return `${number.toLowerCase()}11`;
+		case 'major-11':
+			return `${number}maj11`;
+		case 'minor-major-11':
+			return `${number.toLowerCase()}maj11`;
 		case 'major-add-9':
 			return `${number}add9`;
 		case 'minor-add-9':
 			return `${number.toLowerCase()}add9`;
+		case '6-add-9':
+			return `${number}6add9`;
+		case 'minor-6-add-9':
+			return `${number.toLowerCase()}6add9`;
+		case 'dominant-7th-add-11':
+			return `${number}7add11`;
+		case 'major-7th-add-11':
+			return `${number}maj7add11`;
+		case 'minor-7th-add-11':
+			return `${number.toLowerCase()}7add11`;
+		case 'minor-major-7th-add-11':
+			return `${number.toLowerCase()}maj7add11`;
+		case 'dominant-7th-add-13':
+			return `${number}7add13`;
+		case 'major-7th-add-13':
+			return `${number}maj7add13`;
+		case 'minor-7th-add-13':
+			return `${number.toLowerCase()}7add13`;
+		case 'minor-major-7th-add-13':
+			return `${number.toLowerCase()}maj7add13`;
 		case 'dominant-7th-flat-5':
 			return `${number}7b5`;
 		case 'augmented':
 			return `${number}aug`;
 		case 'augmented-7th':
 			return `${number}aug7`;
+		case 'dominant-7th-flat-9th':
+			return `${number}7b9`;
+		case 'dominant-7th-sharp-9th':
+			return `${number}7s9`;
+		case 'augmented-7th-flat-9th':
+			return `${number}aug7b9`;
 		case 'minor-7th-flat-5':
-			return `${number.toLowerCase()}b5`;
+			return `${number.toLowerCase()}7b5`;
 		case 'minor-7th-sharp-5':
-			return `${number.toLowerCase()}s5`;
+			return `${number.toLowerCase()}7s5`;
+		case 'minor-7th-flat-9th':
+			return `${number.toLowerCase()}7b9`;
 		case '6-suspended-4th':
 			return `${number}6sus4`;
 		case '6-suspended-2nd':
@@ -96,7 +138,7 @@ export const relativeChordToString = (interval: RelativeChord): string => {
  */
 export const parseRelativeChord = (intervalString: string): RelativeChord | null => {
 	const matches = intervalString.match(
-		/^(b?[VI]+|b?[vi]+)(7sus4|7sus2|6sus4|6sus2|maj7sus4|maj7sus2|maj7|aug7|dim7|7b5|7s5|add9|sus4|sus2|aug|dim|7|6|5){0,1}/
+		/^(b?[VI]+|b?[vi]+)(7sus4|7sus2|7add13|7add11|6add9|6sus4|6sus2|maj11|maj9|maj7add13|maj7add11|maj7sus4|maj7sus2|maj7|aug7b9|aug7|dim7|7b5|7s5|7b9|7s9|add9|sus4|sus2|aug|dim|11|9|7|6|5){0,1}/
 	);
 
 	if (matches === null) {
@@ -111,6 +153,9 @@ export const parseRelativeChord = (intervalString: string): RelativeChord | null
 		case 'maj7':
 			quality = quality === 'major' ? 'major-7th' : 'minor-major-7th';
 			break;
+		case 'maj9':
+			quality = quality === 'major' ? 'major-9' : 'minor-major-9';
+			break;
 		case '7sus4':
 			quality = 'dominant-7th-suspended-4th';
 			break;
@@ -119,6 +164,12 @@ export const parseRelativeChord = (intervalString: string): RelativeChord | null
 			break;
 		case '7b5':
 			quality = quality === 'major' ? 'dominant-7th-flat-5' : 'minor-7th-flat-5';
+			break;
+		case '7b9':
+			quality = quality === 'major' ? 'dominant-7th-flat-9th' : 'minor-7th-flat-9th';
+			break;
+		case '7s9':
+			quality = 'dominant-7th-sharp-9th';
 			break;
 		case '7s5':
 			quality = 'minor-7th-sharp-5';
@@ -134,6 +185,9 @@ export const parseRelativeChord = (intervalString: string): RelativeChord | null
 			break;
 		case 'maj7sus2':
 			quality = 'major-7th-suspended-2nd';
+			break;
+		case 'aug7b9':
+			quality = 'augmented-7th-flat-9th';
 			break;
 		case 'aug7':
 			quality = 'augmented-7th';
@@ -153,8 +207,35 @@ export const parseRelativeChord = (intervalString: string): RelativeChord | null
 		case '6':
 			quality = quality === 'major' ? '6' : 'minor-major-6';
 			break;
+		case '6add9':
+			quality = quality === 'major' ? '6-add-9' : 'minor-6-add-9';
+			break;
+		case '7add11':
+			quality = quality === 'major' ? 'dominant-7th-add-11' : 'minor-7th-add-11';
+			break;
+		case '7add13':
+			quality = quality === 'major' ? 'dominant-7th-add-13' : 'minor-7th-add-13';
+			break;
 		case '7':
 			quality = quality === 'major' ? 'dominant-7th' : 'minor-7th';
+			break;
+		case '9':
+			quality = quality === 'major' ? '9' : 'minor-9';
+			break;
+		case '9':
+			quality = quality === 'major' ? '9' : 'minor-9';
+			break;
+		case '11':
+			quality = quality === 'major' ? '11' : 'minor-11';
+			break;
+		case 'maj7add11':
+			quality = quality === 'major' ? 'major-7th-add-11' : 'minor-major-7th-add-11';
+			break;
+		case 'maj7add13':
+			quality = quality === 'major' ? 'major-7th-add-13' : 'minor-major-7th-add-13';
+			break;
+		case 'maj11':
+			quality = quality === 'major' ? 'major-11' : 'minor-major-11';
 			break;
 		case 'sus2':
 			quality = 'suspended-2nd';

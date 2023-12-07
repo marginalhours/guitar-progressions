@@ -53,20 +53,62 @@ export const chordToString = ({ tonic, quality }: ChordWithFlat): string => {
 			return `${tonic}6`;
 		case 'minor-major-6':
 			return `${tonic}m6`;
+		case '9':
+			return `${tonic}9`;
+		case 'minor-9':
+			return `${tonic}m9`;
+		case 'minor-major-9':
+			return `${tonic}mmaj9`;
+		case '11':
+			return `${tonic}11`;
+		case 'minor-11':
+			return `${tonic}m11`;
+		case 'major-11':
+			return `${tonic}maj11`;
+		case 'minor-major-11':
+			return `${tonic}mmaj11`;
 		case 'major-add-9':
 			return `${tonic}add9`;
 		case 'minor-add-9':
 			return `${tonic}madd9`;
+		case '6-add-9':
+			return `${tonic}6add9`;
+		case 'minor-6-add-9':
+			return `${tonic}m6add9`;
+		case 'dominant-7th-add-11':
+			return `${tonic}7add11`;
+		case 'major-7th-add-11':
+			return `${tonic}7add11`;
+		case 'minor-7th-add-11':
+			return `${tonic}m7add11`;
+		case 'minor-major-7th-add-11':
+			return `${tonic}mmaj7add11`;
+		case 'dominant-7th-add-13':
+			return `${tonic}7add13`;
+		case 'major-7th-add-13':
+			return `${tonic}maj7add13`;
+		case 'minor-7th-add-13':
+			return `${tonic}m7add13`;
+		case 'minor-major-7th-add-13':
+			return `${tonic}mmaj7add13`;
 		case 'dominant-7th-flat-5':
 			return `${tonic}7b5`;
 		case 'augmented':
 			return `${tonic}aug`;
 		case 'augmented-7th':
 			return `${tonic}aug7`;
+		case 'dominant-7th-flat-9th':
+			return `${tonic}7b9`;
+		case 'dominant-7th-sharp-9th':
+			return `${tonic}7#9`;
+		case 'augmented-7th-flat-9th':
+			return `${tonic}aug7b9`;
 		case 'minor-7th-flat-5':
 			return `${tonic}m7b5`;
 		case 'minor-7th-sharp-5':
 			return `${tonic}m7#5`;
+		case 'minor-7th-flat-9th':
+			return `${tonic}m7b9`;
 		case '6-suspended-4th':
 			return `${tonic}6sus4`;
 		case '6-suspended-2nd':

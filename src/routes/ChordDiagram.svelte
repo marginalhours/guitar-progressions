@@ -17,6 +17,10 @@
 		marginRight: number;
 		marginTop: number;
 		marginBottom: number;
+		diagramWidth: number;
+		diagramHeight: number;
+		dotRadius: number;
+		labelFontSize: number;
 	}
 
 	const defaultDiagramStyle: DiagramStyle = {
@@ -24,11 +28,15 @@
 		boardColor: '#fff',
 		dotColor: '#111',
 		lineColor: '#333',
-		lineWidth: 3,
+		lineWidth: 2,
 		marginLeft: 28,
 		marginRight: 42,
-		marginTop: 5,
-		marginBottom: 5
+		marginTop: 25,
+		marginBottom: 5,
+		diagramWidth: 150,
+		diagramHeight: 150,
+		dotRadius: 9,
+		labelFontSize: 24
 	};
 
 	export let fretted: (number | null)[] = [];
@@ -44,7 +52,7 @@
 		let lowestFret = maxFret > 4 ? maxFret - 3 : 1;
 
 		for (let i = 0; i < 25; i++) {
-			if (fretted.every((fret) => fret === 0 || fret > lowestFret)) {
+			if (fretted.every((fret) => fret <= 0 || fret > lowestFret)) {
 				lowestFret += 1;
 			} else {
 				break;
@@ -61,12 +69,10 @@
 
 	// Layout calculations
 
-	const diagramWidth = 140;
-	const diagramHeight = 150;
-	const dotRadius = 10;
-	const labelFontSize = 24;
-
 	const diagramStyle = { ...style, ...defaultDiagramStyle };
+
+	const { diagramWidth, diagramHeight, dotRadius, labelFontSize } = diagramStyle;
+
 	$: lowestFret = findLowestFret(fretted);
 	$: relativeFrets = fretted.map((fret) => fret - lowestFret);
 
@@ -85,8 +91,10 @@
 
 	// middle strings only
 	const stringXcoords = [
-		diagramStyle.marginLeft - diagramStyle.lineWidth / 2 + Math.floor((1 / 3) * boardWidth),
-		diagramStyle.marginLeft - diagramStyle.lineWidth / 2 + Math.floor((2 / 3) * boardWidth)
+		diagramStyle.marginLeft - diagramStyle.lineWidth / 2 + Math.floor((1 / 5) * boardWidth),
+		diagramStyle.marginLeft - diagramStyle.lineWidth / 2 + Math.floor((2 / 5) * boardWidth),
+		diagramStyle.marginLeft - diagramStyle.lineWidth / 2 + Math.floor((3 / 5) * boardWidth),
+		diagramStyle.marginLeft - diagramStyle.lineWidth / 2 + Math.floor((4 / 5) * boardWidth)
 	];
 
 	const fretYcoords = [
@@ -97,10 +105,12 @@
 	];
 
 	const dotXcoords = [
-		diagramStyle.marginLeft + Math.floor((0 / 3) * boardWidth),
-		diagramStyle.marginLeft + Math.floor((1 / 3) * boardWidth),
-		diagramStyle.marginLeft + Math.floor((2 / 3) * boardWidth),
-		diagramStyle.marginLeft + Math.floor((3 / 3) * boardWidth)
+		diagramStyle.marginLeft + Math.floor((0 / 5) * boardWidth),
+		diagramStyle.marginLeft + Math.floor((1 / 5) * boardWidth),
+		diagramStyle.marginLeft + Math.floor((2 / 5) * boardWidth),
+		diagramStyle.marginLeft + Math.floor((3 / 5) * boardWidth),
+		diagramStyle.marginLeft + Math.floor((4 / 5) * boardWidth),
+		diagramStyle.marginLeft + Math.floor((5 / 5) * boardWidth)
 	];
 </script>
 
@@ -110,10 +120,10 @@
 	xmlns="http://www.w3.org/2000/svg"
 >
 	<!-- Fretboard top line -->
-	{#if lowestFret == 0}
+	{#if lowestFret <= 1}
 		<rect
 			x={diagramStyle.marginLeft}
-			y={diagramStyle.marginTop - diagramStyle.lineWidth}
+			y={diagramStyle.marginTop - diagramStyle.lineWidth * 1.5}
 			width={boardWidth}
 			height={diagramStyle.lineWidth * 2}
 			stroke={diagramStyle.lineColor}
@@ -124,6 +134,32 @@
 			stroke-linejoin="round"
 		/>
 	{/if}
+
+	<!-- X's for muted strings -->
+	{#each [0, 1, 2, 3, 4, 5] as stringIndex}
+		{#if fretted[stringIndex] < 0}
+			<text
+				font-size="18px"
+				transition:fade
+				color={diagramStyle.dotColor}
+				x={dotXcoords[stringIndex] - 6}
+				y={diagramStyle.marginTop - 10}>x</text
+			>
+		{/if}
+	{/each}
+
+	<!-- O's for open strings -->
+	{#each [0, 1, 2, 3, 4, 5] as stringIndex}
+		{#if fretted[stringIndex] == 0}
+			<text
+				font-size="16px"
+				transition:fade
+				color={diagramStyle.dotColor}
+				x={dotXcoords[stringIndex] - 6}
+				y={diagramStyle.marginTop - 8}>O</text
+			>
+		{/if}
+	{/each}
 
 	<!-- Board -->
 	<rect
@@ -140,92 +176,40 @@
 	/>
 
 	<!-- Middle strings -->
-	<rect
-		x={stringXcoords[0]}
-		y={diagramStyle.marginTop}
-		width={diagramStyle.lineWidth}
-		height={boardHeight}
-		fill={diagramStyle.lineColor}
-	/>
-	<rect
-		x={stringXcoords[1]}
-		y={diagramStyle.marginTop}
-		width={diagramStyle.lineWidth}
-		height={boardHeight}
-		fill={diagramStyle.lineColor}
-	/>
+	{#each stringXcoords as xco}
+		<rect
+			x={xco}
+			y={diagramStyle.marginTop}
+			width={diagramStyle.lineWidth}
+			height={boardHeight}
+			fill={diagramStyle.lineColor}
+		/>
+	{/each}
 
 	<!-- Fret lines -->
-	<rect
-		x={diagramStyle.marginLeft}
-		y={fretYcoords[0]}
-		width={boardWidth}
-		height={diagramStyle.lineWidth}
-		fill={diagramStyle.lineColor}
-	/>
-	<rect
-		x={diagramStyle.marginLeft}
-		y={fretYcoords[1]}
-		width={boardWidth}
-		height={diagramStyle.lineWidth}
-		fill={diagramStyle.lineColor}
-	/>
-	<rect
-		x={diagramStyle.marginLeft}
-		y={fretYcoords[2]}
-		width={boardWidth}
-		height={diagramStyle.lineWidth}
-		fill={diagramStyle.lineColor}
-	/>
-	<rect
-		x={diagramStyle.marginLeft}
-		y={fretYcoords[3]}
-		width={boardWidth}
-		height={diagramStyle.lineWidth}
-		fill={diagramStyle.lineColor}
-	/>
+	{#each fretYcoords as yco}
+		<rect
+			x={diagramStyle.marginLeft}
+			y={yco}
+			width={boardWidth}
+			height={diagramStyle.lineWidth}
+			fill={diagramStyle.lineColor}
+		/>
+	{/each}
 
 	<!-- Fretted strings -->
-	{#if relativeFrets[0] >= 0}
-		<circle
-			class="chord-diagram-note"
-			transition:fade
-			fill={diagramStyle.dotColor}
-			cx={dotXcoords[0]}
-			cy={dotYCoords[0]}
-			r={dotRadius}
-		/>
-	{/if}
-	{#if relativeFrets[1] >= 0}
-		<circle
-			class="chord-diagram-note"
-			transition:fade
-			fill={diagramStyle.dotColor}
-			cx={dotXcoords[1]}
-			cy={dotYCoords[1]}
-			r={dotRadius}
-		/>
-	{/if}
-	{#if relativeFrets[2] >= 0}
-		<circle
-			class="chord-diagram-note"
-			transition:fade
-			fill={diagramStyle.dotColor}
-			cx={dotXcoords[2]}
-			cy={dotYCoords[2]}
-			r={dotRadius}
-		/>
-	{/if}
-	{#if relativeFrets[3] >= 0}
-		<circle
-			class="chord-diagram-note"
-			transition:fade
-			fill={diagramStyle.dotColor}
-			cx={dotXcoords[3]}
-			cy={dotYCoords[3]}
-			r={dotRadius}
-		/>
-	{/if}
+	{#each [0, 1, 2, 3, 4, 5] as stringIndex}
+		{#if relativeFrets[stringIndex] >= 0}
+			<circle
+				class="chord-diagram-note"
+				transition:fade
+				fill={diagramStyle.dotColor}
+				cx={dotXcoords[stringIndex]}
+				cy={dotYCoords[stringIndex]}
+				r={dotRadius}
+			/>
+		{/if}
+	{/each}
 
 	<!-- First fret label -->
 	{#if lowestFret > 1}
